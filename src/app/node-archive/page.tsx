@@ -3,8 +3,8 @@ import Header from "@/components/Header";
 
 export default function NodeArchive() {
   const nodes = [
-    { id: 'NODE-001', name: 'GATEWAY_PRIMARY', ip: '192.168.1.1', type: 'ROUTER', status: 'ONLINE' },
-    { id: 'NODE-004', name: 'IOT_DEVICE_77', ip: '192.168.1.156', type: 'IOT', status: 'OFFLINE' }
+    { id: 'NODE-001', name: 'GATEWAY_PRIMARY', ip: '192.168.1.1', type: 'ROUTER', status: 'ONLINE', serial: 'GW-RT-9A1002F' },
+    { id: 'NODE-004', name: 'IOT_DEVICE_77', ip: '192.168.1.156', type: 'IOT', status: 'OFFLINE', serial: 'IOT-CAM-48F89C' }
   ];
 
   return (
@@ -28,6 +28,7 @@ export default function NodeArchive() {
                   <th style={{ padding: '1rem 1.5rem' }}>NODE_ID</th>
                   <th style={{ padding: '1rem' }}>IDENTIFIER</th>
                   <th style={{ padding: '1rem' }}>IP_ADDRESS</th>
+                  <th style={{ padding: '1rem' }}>SERIAL_NO</th>
                   <th style={{ padding: '1rem' }}>CLASS</th>
                   <th style={{ padding: '1rem' }}>STATUS</th>
                   <th style={{ padding: '1rem' }}>ACTIONS</th>
@@ -39,6 +40,7 @@ export default function NodeArchive() {
                     <td style={{ padding: '1rem 1.5rem' }}>{node.id}</td>
                     <td style={{ padding: '1rem', color: 'var(--on-surface)' }}>{node.name}</td>
                     <td style={{ padding: '1rem', color: 'var(--primary)' }}>{node.ip}</td>
+                    <td style={{ padding: '1rem', color: 'var(--on-surface-variant)' }}>{node.serial}</td>
                     <td style={{ padding: '1rem' }}>{node.type}</td>
                     <td style={{ padding: '1rem' }}>
                       <span className={`status-indicator ${node.status === 'ONLINE' ? 'status-online' : 'status-offline'}`} style={{ marginRight: '0.5rem' }}></span>

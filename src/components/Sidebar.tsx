@@ -1,14 +1,20 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 
 const Sidebar = () => {
   const pathname = usePathname();
+  const [sysInfo, setSysInfo] = useState<{ serial: string; model: string } | null>(null);
 
-
+  useEffect(() => {
+    fetch('/api/system-info')
+      .then(res => res.json())
+      .then(data => setSysInfo(data))
+      .catch(() => {});
+  }, []);
 
   const navItems = [
     { name: 'DASH', path: '/', icon: '📊' },
@@ -76,7 +82,12 @@ const Sidebar = () => {
             SECURE_LINK // ACTIVE
           </div>
           <div>ENCRYPTION: AES-256</div>
-          <div style={{ color: 'var(--primary)', marginTop: '0.5rem' }}></div>
+          {sysInfo && (
+            <>
+              <div style={{ color: 'var(--primary)', marginTop: '0.5rem' }}>MODEL: {sysInfo.model}</div>
+              <div style={{ color: 'var(--primary)' }}>SERIAL: {sysInfo.serial}</div>
+            </>
+          )}
         </div>
       </aside>
 

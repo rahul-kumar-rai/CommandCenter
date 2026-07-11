@@ -4,24 +4,38 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
 
+interface Threat {
+  id: string;
+  ip: string;
+  location: string;
+  risk: string;
+}
+
 export default function ThreatMap() {
   const [publicIp, setPublicIp] = useState('DETECTING...');
-  const [activeThreats, setActiveThreats] = useState<any[]>([]);
+  const [activeThreats, setActiveThreats] = useState<Threat[]>([
+    { id: 'TR-902', ip: '185.221.14.90', location: 'MOSCOW, RU', risk: 'HIGH' },
+    { id: 'TR-902', ip: '185.221.14.90', location: 'MOSCOW, RU', risk: 'HIGH' },
+  ]);
   
   useEffect(() => {
     fetch('https://api.ipify.org?format=json')
       .then(res => res.json())
-      .then(data => setPublicIp(data.ip))
-      .catch(() => setPublicIp('45.22.11.90'));
-
-    // Simulate active threats
-    const threats = [
-      { id: 'TR-902', ip: '185.221.14.90', location: 'MOSCOW, RU', risk: 'HIGH' },
-      { id: 'TR-902', ip: '185.221.14.90', location: 'MOSCOW, RU', risk: 'HIGH' },
-    ];
-    setActiveThreats(threats);
-
-    setActiveThreats(prev => [...prev, { id: 'TR-999', ip: publicIp, location: 'LOCALHOST, US', risk: 'HIGH' }]);
+      .then(data => {
+        setPublicIp(data.ip);
+        setActiveThreats(prev => {
+          if (prev.some(t => t.id === 'TR-999')) return prev;
+          return [...prev, { id: 'TR-999', ip: data.ip, location: 'LOCALHOST, US', risk: 'HIGH' }];
+        });
+      })
+      .catch(() => {
+        const fallbackIp = '45.22.11.90';
+        setPublicIp(fallbackIp);
+        setActiveThreats(prev => {
+          if (prev.some(t => t.id === 'TR-999')) return prev;
+          return [...prev, { id: 'TR-999', ip: fallbackIp, location: 'LOCALHOST, US', risk: 'HIGH' }];
+        });
+      });
   }, []);
 
   return (

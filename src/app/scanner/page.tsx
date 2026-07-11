@@ -9,6 +9,7 @@ interface Node {
   ip: string;
   type: string;
   status: string;
+  serial?: string;
 }
 
 export default function Scanner() {
@@ -62,12 +63,15 @@ export default function Scanner() {
         if (Math.random() > 0.8) {
           const newId = discoveredNodes.length + 1;
           const nodeTypes = ['WORKSTATION', 'MOBILE', 'SERVER', 'IOT', 'PRINTER'];
+          const selectedType = nodeTypes[Math.floor(Math.random() * nodeTypes.length)];
+          const randomHex = Math.random().toString(16).substring(2, 8).toUpperCase();
 
           const newNode = {
             id: `NODE-SCAN-${newId}`,
             ip: `${baseIp}.${Math.floor(Math.random() * 254) + 1}`,
-            type: nodeTypes[Math.floor(Math.random() * nodeTypes.length)],
-            status: 'STABLE'
+            type: selectedType,
+            status: 'STABLE',
+            serial: `${selectedType.substring(0, 3)}-${randomHex}`
           };
           setDiscoveredNodes(prev => [newNode, ...prev]);
         }
@@ -162,7 +166,7 @@ export default function Scanner() {
                   <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.75rem', border: '1px solid rgba(0, 240, 255, 0.1)', background: 'rgba(0, 240, 255, 0.02)' }}>
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                       <span style={{ fontSize: '0.8125rem', fontWeight: 'bold' }}>{node.ip}</span>
-                      <span style={{ fontSize: '0.625rem', color: 'var(--on-surface-variant)' }}>{node.type}</span>
+                      <span style={{ fontSize: '0.625rem', color: 'var(--on-surface-variant)' }}>{node.type} {node.serial ? `// SN: ${node.serial}` : ''}</span>
                     </div>
                     <div style={{ textAlign: 'right' }}>
                       <div style={{ fontSize: '0.625rem', color: 'var(--success)' }}>STABLE</div>
