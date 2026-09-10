@@ -27,7 +27,6 @@ const LiveDataStream = () => {
       ];
       
       const randomEvent = events[Math.floor(Math.random() * events.length)];
-      
       setLogs(prev => [
         { time: timeStr, ...randomEvent },
         ...prev.slice(0, 14)
